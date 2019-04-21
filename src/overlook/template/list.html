@@ -1,0 +1,15 @@
+<div>
+    <ng-transclude></ng-transclude>
+    <table class="table table-sm {{classes.table.hover}}">
+        <thead>
+            <tr>
+                <th ng-repeat="column in columns">{{column.caption}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in rows" ng-click="selectRow(row)" ng-class="classes.row(row).selected">
+                <td ng-repeat="column in columns">{{row[column.source]}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

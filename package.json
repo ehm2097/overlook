@@ -1,0 +1,27 @@
+{
+  "name": "overlook-sandbox",
+  "version": "1.0.0",
+  "description": "Just a proof of concept for now",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "overlook"
+  ],
+  "author": "avat",
+  "license": "ISC",
+  "dependencies": {
+    "npm": "^6.9.0"
+  },
+  "devDependencies": {
+    "angular": "^1.7.8",
+    "angular-route": "^1.7.8",
+    "bootstrap": "^4.3.1",
+    "grunt": "^1.0.4",
+    "grunt-contrib-connect": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.15.0"
+  }
+}
