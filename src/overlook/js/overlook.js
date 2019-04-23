@@ -1,3 +1,16 @@
+
+function Selection(setup){
+    // TODO: Provide support for multiple selection
+    var current = null;
+    this.select = function(item){
+        current = item;
+    }
+    this.isSelected = function(item){
+        return (item === current);
+    }
+}
+
+
 var app = angular.module("overlook", ["ngRoute"]);
 
 angular.module("overlook").provider("okApp", [function(){
@@ -38,6 +51,7 @@ angular.module("overlook").controller("MainController", ["$log", "$scope", "$loc
 }]);
 
 angular.module("overlook").controller("lkPageController", ["$log", "$route", "$scope", "okApp", function($log, $route, $scope, okApp){
+    $scope.selection = new Selection();
     $scope.getPageUrl = function(){
         return okApp.getPageUrl($route.current.params.page);
     };
@@ -99,9 +113,11 @@ angular.module("overlook").component("lkMenuItem", {
 angular.module("overlook").component("okList", {
     templateUrl: "/overlook/template/list.html",
     transclude: true,
-    controller: ["$scope", "$http", "okApp", function($scope, $http, okApp){
+    controller: ["$log", "$scope", "$http", "okApp", function($log, $scope, $http, okApp){
 
         $scope.columns = [];
+
+        var selection = $scope.$parent.selection;
 
         this.addColumn = function(column){
             $scope.columns.push(column);
@@ -114,6 +130,15 @@ angular.module("overlook").component("okList", {
             function(){
             });
         };
+
+        $scope.selectRow = function(row){
+            selection.select(row);
+        }
+
+        $scope.getRowClass = function(row){
+            if (selection.isSelected(row)) return "table-primary";
+            else return "";
+        }
     }],
     bindings: {
         source: "@"
