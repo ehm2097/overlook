@@ -8,6 +8,9 @@ function Selection(setup){
     this.isSelected = function(item){
         return (item === current);
     }
+    this.count = function() {
+        return current == null ? 0 : 1;
+    }
 }
 
 
@@ -110,38 +113,79 @@ angular.module("overlook").component("lkMenuItem", {
     }
 });
 
+function ListController($log, $scope, $http, okApp){
+
+    $scope.columns = [];
+    $scope.actions = [];
+
+    var selection = $scope.$parent.selection;
+
+    function CreateAction(url){
+        this.caption = "New";
+        this.url = url;
+        this.disabled = function(){
+            return false;
+        }
+    }
+
+    function UpdateAction(url){
+        this.caption = "Edit";
+        this.url = url;
+        this.disabled = function(){
+            //$log.log(selection.count);
+            return selection.count() != 1;
+        }
+    }
+
+    function DeleteAction(url){
+        this.caption = "delete";
+        this.url = url;
+        this.disabled = function(){
+            return selection.count() == 0;
+        }
+    }
+
+    function registerAction(url, action){
+        if(url) $scope.actions.push(new action(url));
+    }
+
+    this.addColumn = function(column){
+        $scope.columns.push(column);
+    };
+
+    this.$onInit = function(){
+        $http.get(okApp.getDataUrl(this.source)).then(function(response){
+            $scope.rows = response.data;
+        }, 
+        function(){
+        });
+
+        registerAction(this.okCreateAction, CreateAction);
+        registerAction(this.okUpdateAction, UpdateAction);
+        registerAction(this.okDeleteAction, DeleteAction);
+
+    };
+
+    $scope.selectRow = function(row){
+        selection.select(row);
+    }
+
+    $scope.getRowClass = function(row){
+        if (selection.isSelected(row)) return "table-primary";
+        else return "";
+    }
+
+}
+
 angular.module("overlook").component("okList", {
     templateUrl: "/overlook/template/list.html",
     transclude: true,
-    controller: ["$log", "$scope", "$http", "okApp", function($log, $scope, $http, okApp){
-
-        $scope.columns = [];
-
-        var selection = $scope.$parent.selection;
-
-        this.addColumn = function(column){
-            $scope.columns.push(column);
-        };
-
-        this.$onInit = function(){
-            $http.get(okApp.getDataUrl(this.source)).then(function(response){
-                $scope.rows = response.data;
-            }, 
-            function(){
-            });
-        };
-
-        $scope.selectRow = function(row){
-            selection.select(row);
-        }
-
-        $scope.getRowClass = function(row){
-            if (selection.isSelected(row)) return "table-primary";
-            else return "";
-        }
-    }],
+    controller: ["$log", "$scope", "$http", "okApp", ListController],
     bindings: {
-        source: "@"
+        source: "@",
+        okCreateAction: "@",
+        okUpdateAction: "@",
+        okDeleteAction: "@"
     }
 });
 
