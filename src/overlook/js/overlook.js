@@ -8,13 +8,16 @@ function Selection(setup){
     this.isSelected = function(item){
         return (item === current);
     }
+    this.current = function(){
+        return current;
+    }    
     this.count = function() {
         return current == null ? 0 : 1;
     }
 }
 
 
-var app = angular.module("overlook", ["ngRoute"]);
+var app = angular.module("overlook", ["ngRoute", "ui.bootstrap"]);
 
 angular.module("overlook").provider("okApp", [function(){
 
@@ -113,7 +116,7 @@ angular.module("overlook").component("lkMenuItem", {
     }
 });
 
-function ListController($log, $scope, $http, okApp){
+function ListController($log, $scope, $http, $uibModal, okApp){
 
     $scope.columns = [];
     $scope.actions = [];
@@ -126,23 +129,48 @@ function ListController($log, $scope, $http, okApp){
         this.disabled = function(){
             return false;
         }
+        this.execute = function(){
+            $log.log("CREATE");
+            popup();
+        }
     }
 
     function UpdateAction(url){
         this.caption = "Edit";
         this.url = url;
         this.disabled = function(){
-            //$log.log(selection.count);
             return selection.count() != 1;
+        }
+        this.execute = function(){
+            $log.log("EDIT", selection.current());
+            popup();
         }
     }
 
     function DeleteAction(url){
-        this.caption = "delete";
+        this.caption = "Delete";
         this.url = url;
         this.disabled = function(){
             return selection.count() == 0;
         }
+        this.execute = function(){
+            $log.log("DELETE", selection.count());
+        }
+    }
+
+    function popup(){
+        var modal = $uibModal.open({
+            templateUrl: "/overlook/template/popup.html",
+            controller: ["$log", "$uibModalInstance", "$scope", PopupController],
+            controllerAs: "$ctrl",
+            resolve: {
+                columns: function(){ return $scope.columns; }
+            },
+            windowClass: "show",
+            backdropClass: "show",
+            small: "sm"
+        });
+        modal.result.then(function(){$log.log("Well closed!")}, function(){$log.log("Badly closed!")})
     }
 
     function registerAction(url, action){
@@ -180,7 +208,7 @@ function ListController($log, $scope, $http, okApp){
 angular.module("overlook").component("okList", {
     templateUrl: "/overlook/template/list.html",
     transclude: true,
-    controller: ["$log", "$scope", "$http", "okApp", ListController],
+    controller: ["$log", "$scope", "$http", "$uibModal", "okApp", ListController],
     bindings: {
         source: "@",
         okCreateAction: "@",
@@ -188,6 +216,17 @@ angular.module("overlook").component("okList", {
         okDeleteAction: "@"
     }
 });
+
+function PopupController($log, $uibModalInstance, $scope){
+    this.ok = function(){
+        $log.log("OK!");
+        $uibModalInstance.close();
+    }
+    this.cancel = function(){
+        $log.log("Canceled!");
+        $uibModalInstance.dismiss();
+    }
+}
 
 angular.module("overlook").component("okListColumn", {
     template:"<ng-transclude></ng-transclude>",

@@ -8,12 +8,12 @@
         </thead>
         <tbody>
             <tr ng-repeat="row in rows" ng-click="selectRow(row)" ng-class="getRowClass(row)">
-                <td ng-repeat="column in columns">{{row[column.source]}}</td>
+                <td ng-repeat="column in columns" class="py-0">{{row[column.source]}}</td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <div class="btn-toolbar">
-    <button ng-repeat="action in actions" type="button" class="btn btn-primary ml-1" ng-disabled="action.disabled()">{{action.caption}}</button>
+    <button ng-repeat="action in actions" type="button" class="btn btn-primary ml-1" ng-disabled="action.disabled()" ng-click="action.execute()">{{action.caption}}</button>
 </div>

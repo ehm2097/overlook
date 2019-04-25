@@ -14,6 +14,7 @@ module.exports = function(grunt) {
                     { src: "node_modules/popper.js/dist/umd/popper.js", dest: "dest/overlook/js/lib/popper.js" },
                     { src: "node_modules/angular/angular.js", dest: "dest/overlook/js/lib/angular.js" },
                     { src: "node_modules/angular-route/angular-route.js", dest: "dest/overlook/js/lib/angular-route.js" },
+                    { src: "node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js", dest: "dest/overlook/js/lib/angular-ui-bootstrap.js" },
                     { src: "node_modules/bootstrap/dist/css/bootstrap.css", dest: "dest/overlook/css/lib/bootstrap.css" },
                     { src: "node_modules/bootstrap/dist/js/bootstrap.js", dest: "dest/overlook/js/lib/bootstrap.js" }
                 ]
