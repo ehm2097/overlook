@@ -1,14 +1,16 @@
 <div class="modal-header py-1">
-    <h4 class="modal-title" id="modal-title">I'm a modal!</h4>
+    <h4 class="modal-title" style="text-transform:capitalize" id="modal-title">{{$resolve.title}}</h4>
 </div>
 
-<div class="modal-body" id="modal-body py-2">
-    <ul>
-        <li ng-repeat="column in $resolve.columns">{{column.caption}}</li>
-    </ul>
-</div>
+<div class="modal-body" id="modal-body">
+    <div class="form-group" ng-repeat="column in $resolve.columns">
+        <label for="{{column.source}}" class="my-0">{{column.caption}}</label>
+        <input type="email" class="form-control form-control-sm" id="{{column.source}}" ng-readonly="$ctrl.readonly(column)"/>
+    </div>
+  </div>
 
 <div class="modal-footer py-2">
     <button class="btn btn-success" type="button" ng-click="$ctrl.ok()">OK</button>
     <button class="btn btn-danger" type="button" ng-click="$ctrl.cancel()">Cancel</button>
 </div>
+

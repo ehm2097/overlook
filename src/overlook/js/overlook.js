@@ -116,11 +116,25 @@ angular.module("overlook").component("lkMenuItem", {
     }
 });
 
+angular.module("overlook").component("okEntity", {
+    controller: ["$log", function($log){
+        this.getEntity = function(){
+            return {
+            }
+        }
+    }],
+    bindings: {
+        okCaptionSingle: "@",
+        okCaptionMultiple: "@"
+    }
+});
+
 function ListController($log, $scope, $http, $uibModal, okApp){
 
     $scope.columns = [];
     $scope.actions = [];
 
+    var ctrl = this;
     var selection = $scope.$parent.selection;
 
     function CreateAction(url){
@@ -164,7 +178,8 @@ function ListController($log, $scope, $http, $uibModal, okApp){
             controller: ["$log", "$uibModalInstance", "$scope", PopupController],
             controllerAs: "$ctrl",
             resolve: {
-                columns: function(){ return $scope.columns; }
+                columns: function(){ return $scope.columns; },
+                title: function(){ return $scope.$ctrl.entity.okCaptionSingle }
             },
             windowClass: "show",
             backdropClass: "show",
@@ -187,6 +202,8 @@ function ListController($log, $scope, $http, $uibModal, okApp){
         }, 
         function(){
         });
+
+        $scope.title = ctrl.entity.okCaptionMultiple;
 
         registerAction(this.okCreateAction, CreateAction);
         registerAction(this.okUpdateAction, UpdateAction);
@@ -214,6 +231,9 @@ angular.module("overlook").component("okList", {
         okCreateAction: "@",
         okUpdateAction: "@",
         okDeleteAction: "@"
+    },
+    require: {
+        entity: "^okEntity"
     }
 });
 
@@ -226,6 +246,9 @@ function PopupController($log, $uibModalInstance, $scope){
         $log.log("Canceled!");
         $uibModalInstance.dismiss();
     }
+    this.readonly = function(column) {
+        return column.usage == "pk";
+    }
 }
 
 angular.module("overlook").component("okListColumn", {
@@ -236,7 +259,8 @@ angular.module("overlook").component("okListColumn", {
             var source = this.okSource;
             var column = {
                 source: this.okSource,
-                caption: this.okCaption
+                caption: this.okCaption,
+                usage: this.okFieldUsage
             };
             //$log.log("Cucu", column);
             this.list.addColumn(column);
@@ -244,7 +268,8 @@ angular.module("overlook").component("okListColumn", {
     }],
     bindings: {
         okSource: "@",
-        okCaption: "@"
+        okCaption: "@",
+        okFieldUsage: "@"
     },
     require: {
         list: "^okList"
