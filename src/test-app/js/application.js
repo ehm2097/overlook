@@ -1,7 +1,7 @@
 angular.module("application", ["overlook"])
 
-.config(["okAppProvider", function(okAppProvider){
-    okAppProvider.setupPageUrl("/test-app/template/");
-    okAppProvider.setupDataUrl("/test-app/data/");
-    okAppProvider.setupMenuUrl("/test-app/template/application-menu.html");
+.config(["okAppContextProvider", function(okAppContextProvider){
+    okAppContextProvider.setupPageUrl("/template/app/");
+    okAppContextProvider.setupDataUrl("/data/");
+    okAppContextProvider.setupMenuUrl("/template/app/application-menu.html");
 }]);
