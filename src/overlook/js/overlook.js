@@ -144,8 +144,11 @@ function ListController($log, $scope, $http, $uibModal, okApp){
             return false;
         }
         this.execute = function(){
+            var data = {};
             $log.log("CREATE");
-            popup();
+            popup(data, function(){
+                $scope.rows.push(data);
+            });
         }
     }
 
@@ -156,8 +159,12 @@ function ListController($log, $scope, $http, $uibModal, okApp){
             return selection.count() != 1;
         }
         this.execute = function(){
-            $log.log("EDIT", selection.current());
-            popup();
+            var data = selection.current();
+            var copy = angular.copy(data);
+            $log.log("EDIT", copy);
+            popup(copy, function() {
+                angular.copy(copy, data);
+            });
         }
     }
 
@@ -172,20 +179,21 @@ function ListController($log, $scope, $http, $uibModal, okApp){
         }
     }
 
-    function popup(){
+    function popup(data, complete){
         var modal = $uibModal.open({
             templateUrl: "/overlook/template/popup.html",
             controller: ["$log", "$uibModalInstance", "$scope", PopupController],
             controllerAs: "$ctrl",
             resolve: {
-                columns: function(){ return $scope.columns; },
+                data: function() { return data },
+                columns: function(){ return $scope.columns },
                 title: function(){ return $scope.$ctrl.entity.okCaptionSingle }
             },
             windowClass: "show",
             backdropClass: "show",
             small: "sm"
         });
-        modal.result.then(function(){$log.log("Well closed!")}, function(){$log.log("Badly closed!")})
+        modal.result.then(complete, function(){$log.log("Badly closed!")})
     }
 
     function registerAction(url, action){
@@ -238,6 +246,14 @@ angular.module("overlook").component("okList", {
 });
 
 function PopupController($log, $uibModalInstance, $scope){
+
+    var isNew = false;
+    $scope.$resolve.columns.forEach(function(column){
+       if((column.usage == "pk") && !(column.source in $scope.$resolve.data)) isNew = true; 
+    });
+
+    $log.log("isNew", isNew);
+
     this.ok = function(){
         $log.log("OK!");
         $uibModalInstance.close();
@@ -247,6 +263,9 @@ function PopupController($log, $uibModalInstance, $scope){
         $uibModalInstance.dismiss();
     }
     this.readonly = function(column) {
+        return !isNew && (column.usage == "pk");
+    }
+    this.required = function(column){
         return column.usage == "pk";
     }
 }
