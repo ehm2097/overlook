@@ -1,9 +1,8 @@
 
 
 
-angular.module("overlook").controller("MainController", ["$log", "dummy", "$scope", "okAppContext", function($log, dummy, $scope, okAppContext){
+angular.module("overlook").controller("MainController", ["$log", "$scope", "okAppContext", function($log, $scope, okAppContext){
     $scope.appMenuUrl = okAppContext.getMenuUrl();
-    dummy.execute("THIS is what");
 }]);
 
 angular.module("overlook").controller("lkPageController", ["$log", "$route", "$scope", "okAppContext", function($log, $route, $scope, okAppContext){

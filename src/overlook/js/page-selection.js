@@ -3,6 +3,11 @@
 function Selection(setup){
     // TODO: Provide support for multiple selection
     var current = null;
+
+    this.reset = function(){
+        current = null;
+    }
+
     this.select = function(item){
         current = item;
     }

@@ -6,6 +6,14 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
     var ctrl = this;
     var selection = $scope.$parent.selection;
 
+    function loadRows(){
+        okData[ctrl.okSource]().then(function(response){
+            $scope.rows = response.data;
+        }, function(){
+        });
+        selection.reset();
+    }
+
     function CreateAction(url){
         this.caption = "New";
         this.url = url;
@@ -14,9 +22,11 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
         }
         this.execute = function(){
             var data = {};
-            $log.log("CREATE");
             popup(data, function(){
-                $scope.rows.push(data);
+                okData[ctrl.okCreateAction](data).then(function(){
+                    $scope.rows.push(data);
+                }, function(){
+                });
             });
         }
     }
@@ -30,9 +40,11 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
         this.execute = function(){
             var data = selection.current();
             var copy = angular.copy(data);
-            $log.log("EDIT", copy);
-            popup(copy, function() {
-                angular.copy(copy, data);
+            popup(copy, function(){
+                okData[ctrl.okUpdateAction](data).then(function(){
+                    angular.copy(copy, data);
+                }, function(){
+                });
             });
         }
     }
@@ -44,7 +56,10 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
             return selection.count() == 0;
         }
         this.execute = function(){
-            $log.log("DELETE", selection.count());
+            okData[ctrl.okDeleteAction](selection.current()).then(function(){
+                loadRows();
+            }, function(){
+            });
         }
     }
 
@@ -62,7 +77,7 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
             backdropClass: "show",
             small: "sm"
         });
-        modal.result.then(complete, function(){$log.log("Badly closed!")})
+        modal.result.then(complete, function(){})
     }
 
     function registerAction(url, action){
@@ -74,12 +89,7 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
     };
 
     this.$onInit = function(){
-        okData[this.source]().then(function(response){
-            $scope.rows = response.data;
-        }, 
-        function(){
-        });
-
+        loadRows();
         $scope.title = ctrl.entity.okCaptionMultiple;
 
         registerAction(this.okCreateAction, CreateAction);
@@ -104,7 +114,7 @@ angular.module("overlook").component("okList", {
     transclude: true,
     controller: ["$log", "$scope", "okData", "$uibModal", "okAppContext", ListController],
     bindings: {
-        source: "@",
+        okSource: "@",
         okCreateAction: "@",
         okUpdateAction: "@",
         okDeleteAction: "@"

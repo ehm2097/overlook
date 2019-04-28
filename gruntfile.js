@@ -15,8 +15,7 @@ module.exports = function(grunt) {
                     { src: "src/overlook/css/overlook.css", dest: "dest/css/overlook.css" },
                     { expand: true, cwd: "src/overlook/template", src: "**", dest: "dest/template/overlook" },
                     { expand: true, cwd: "src/test-app/js", src: "**", dest: "dest/js/app" },
-                    { expand: true, cwd: "src/test-app/template", src: "**", dest: "dest/template/app" },
-                    { expand: true, cwd: "src/test-app/data", src: "**", dest: "dest/data" }
+                    { expand: true, cwd: "src/test-app/template", src: "**", dest: "dest/template/app" }
                 ]
             }
         },
