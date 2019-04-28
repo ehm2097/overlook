@@ -1,4 +1,4 @@
-function ListController($log, $scope, $http, $uibModal, okAppContext){
+function ListController($log, $scope, okData, $uibModal, okAppContext){
 
     $scope.columns = [];
     $scope.actions = [];
@@ -74,7 +74,7 @@ function ListController($log, $scope, $http, $uibModal, okAppContext){
     };
 
     this.$onInit = function(){
-        $http.get(okAppContext.getDataUrl(this.source)).then(function(response){
+        okData[this.source]().then(function(response){
             $scope.rows = response.data;
         }, 
         function(){
@@ -102,7 +102,7 @@ function ListController($log, $scope, $http, $uibModal, okAppContext){
 angular.module("overlook").component("okList", {
     templateUrl: "/template/overlook/list.html",
     transclude: true,
-    controller: ["$log", "$scope", "$http", "$uibModal", "okAppContext", ListController],
+    controller: ["$log", "$scope", "okData", "$uibModal", "okAppContext", ListController],
     bindings: {
         source: "@",
         okCreateAction: "@",
