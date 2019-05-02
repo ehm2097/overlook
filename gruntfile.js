@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         },
         concat: {
             js: {
-                src: ["src/overlook/js/main.js", "src/overlook/js/**"],
+                src: ["src/overlook/js/main.js", "src/overlook/js/**", "!**/*-spec.js"],
                 dest: "dest/js/overlook/overlook.js"
             }
         },
