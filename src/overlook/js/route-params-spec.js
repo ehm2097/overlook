@@ -1,7 +1,7 @@
 
 describe("Route parameter handler", function(){
 
-    var routeParams
+    var routeParams;
 
     beforeEach(angular.mock.module("overlook"));
 

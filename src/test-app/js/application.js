@@ -13,6 +13,11 @@ function ServerEmulator($http, $q){
         { code: "CL2", name: "A Completely Different Customer" },
         { code: "CL3", name: "The Very Last Of Customers" }
     ];
+    var features = [
+        { customer: "CL1", code: "CL1F1",  name: "Feature #1" },
+        { customer: "CL1", code: "CL1F2",  name: "Feature #2" },
+        { customer: "CL2", code: "CL2FN",  name: "Just Another Feature" }
+    ];
 
     this.getCustomers = function(){
         return $q(function(resolve){ 
@@ -22,7 +27,7 @@ function ServerEmulator($http, $q){
         })
     };
 
-    this.createCustomer = function(customer){
+    this.createCustomer = function(){
         return $q(function(resolve, reject){ 
             var found = customers.find(function(item){
                 return item.code == customer.code;
@@ -53,6 +58,13 @@ function ServerEmulator($http, $q){
             }
             else reject();       
         })
+    }
+
+    this.getFeatures = function(filters) {
+        var result = [];
+        if(filters.customer == "CL1") result = features.slice(0,2);
+        if(filters.customer == "CL2") result = features.slice(2,3);
+        return $q(function(resolve){ resolve({ data: result });  })
     }
 
     return this;
