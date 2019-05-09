@@ -1,17 +1,17 @@
-<ok-entity ok-caption-single="customer" ok-caption-multiple="customers">
-    <ok-list ok-source="getCustomers" ok-create-action="createCustomer" ok-update-action="updateCustomer" ok-delete-action="deleteCustomers">
+<ok-entity ok-name="customer" ok-source="getCustomers" ok-caption-single="customer" ok-caption-multiple="customers">
+    <ok-list ok-create-action="createCustomer" ok-update-action="updateCustomer" ok-delete-action="deleteCustomers">
         <ok-list-column ok-source="code" ok-caption="Code" ok-field-usage="pk"/>
         <ok-list-column ok-source="name" ok-caption="Full Name" ok-field-usage="title"/>
     </ok-list>
 </ok-entity>
 
-<test-entity test-name="ALPHA">
+<!--test-entity test-name="ALPHA">
     <test-list></test-list>
     <test-entity test-name="BRAVO">
         <test-list></test-list>
     </test-entity>
     <test-list></test-list>
-</test-entity>
+</test-entity-->
 
 
 

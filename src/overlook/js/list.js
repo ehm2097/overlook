@@ -4,16 +4,13 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
     $scope.actions = [];
 
     var ctrl = this;
-    $log.log($scope);
-    var pageContext = $scope.$parent.pageContext; 
-    var selection = pageContext.selection;
-    var pageFilters = {};
+    var entityHandler = null;
+    var selection = null;
 
     function loadRows(){
-        okData[ctrl.okSource](pageFilters).then(function(response){
+        entityHandler.retrieve().then(function(response){
             $scope.rows = response.data;
-        }, function(){
-        });
+        }, function(){});
         selection.reset();
     }
 
@@ -74,7 +71,7 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
             resolve: {
                 data: function() { return data },
                 columns: function(){ return $scope.columns },
-                title: function(){ return "$scope.$ctrl.entity.okCaptionSingle" } // ENTITY
+                title: function(){ return entityHandler.getCaptionSingle() } 
             },
             windowClass: "show",
             backdropClass: "show",
@@ -92,16 +89,12 @@ function ListController($log, $scope, okData, $uibModal, okAppContext){
     };
 
     this.$onInit = function(){
-        /*  // ENTITY
-        ctrl.entity.expectedFilters.forEach(field => {
-            pageFilters[field] = null;
-        });
-        pageContext.filters(pageFilters);
-        */
 
+        entityHandler = ctrl.entity.getHandler();
+        selection = entityHandler.getSelection();
         loadRows();
 
-        // $scope.title = ctrl.entity.okCaptionMultiple; // ENTITY
+        $scope.title = entityHandler.getCaptionMultiple();
 
         registerAction(this.okCreateAction, CreateAction);
         registerAction(this.okUpdateAction, UpdateAction);
@@ -131,6 +124,6 @@ angular.module("overlook").component("okList", {
         okDeleteAction: "@"
     },
     require: {
-        // entity: "^okEntity" // ENTITY
+        entity: "^okEntity"
     }
 });

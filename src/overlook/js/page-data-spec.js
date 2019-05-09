@@ -42,7 +42,7 @@ describe("Page Data Service", function(){
         pageData.initialize();
 
         // Register and check entity
-        var entity = pageData.entity({
+        var entity = pageData.registerEntity({
             name: "entity",
             source: "getParents"
         });
@@ -60,14 +60,14 @@ describe("Page Data Service", function(){
         pageData.initialize();
 
         // Register and check parent entity
-        var parent = pageData.entity({
+        var parent = pageData.registerEntity({
             name: "parent",
             source: "getParents"
         });
         expect(parent).toBeTruthy();
 
         // Register and check child entity
-        var child = pageData.entity({
+        var child = pageData.registerEntity({
             name: "child",
             parent: "parent",
             source: "getChildren"

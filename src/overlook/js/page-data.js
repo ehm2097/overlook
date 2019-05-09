@@ -33,9 +33,10 @@ angular.module("overlook")
             entities = {};
         }
 
-        this.entity = function(entityDef){
-
+        this.registerEntity = function(entityDef){
             function EntityHandler(){
+
+                var selection = new Selection();
 
                 // Build object to store expected arguments
                 var fArray = angular.copy(okData[entityDef.source]);
@@ -61,10 +62,13 @@ angular.module("overlook")
                     }
 
                     // Invoke known retrieve function
-                    sourceFn(localArgs);
+                    return sourceFn(localArgs);
                 }
 
-                this.selection = new Selection();
+                // Additional information made available on entity handler
+                this.getSelection = function(){ return selection; };
+                this.getCaptionSingle = function() { return entityDef.captionSingle };
+                this.getCaptionMultiple = function() { return entityDef.captionMultiple };
 
                 // Register as a managed entity
                 entities[entityDef.name] = this;

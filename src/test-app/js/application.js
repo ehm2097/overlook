@@ -19,15 +19,15 @@ function ServerEmulator($http, $q){
         { customer: "CL2", code: "CL2FN",  name: "Just Another Feature" }
     ];
 
-    this.getCustomers = function(){
+    this.getCustomers = [function(){
         return $q(function(resolve){ 
             resolve({
                 data: angular.copy(customers)
             }); 
         })
-    };
+    }];
 
-    this.createCustomer = function(){
+    this.createCustomer = function(customer){
         return $q(function(resolve, reject){ 
             var found = customers.find(function(item){
                 return item.code == customer.code;
@@ -60,12 +60,12 @@ function ServerEmulator($http, $q){
         })
     }
 
-    this.getFeatures = function(filters) {
+    this.getFeatures = ["customer", function(args) {
         var result = [];
-        if(filters.customer == "CL1") result = features.slice(0,2);
-        if(filters.customer == "CL2") result = features.slice(2,3);
+        if(args.customer == "CL1") result = features.slice(0,2);
+        if(args.customer == "CL2") result = features.slice(2,3);
         return $q(function(resolve){ resolve({ data: result });  })
-    }
+    }];
 
     return this;
 }
