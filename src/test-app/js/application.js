@@ -47,7 +47,7 @@ function ServerEmulator($http, $q){
         })
     }
 
-    this.deleteCustomers = function(customer){
+    this.deleteCustomer = function(customer){
         return $q(function(resolve, reject){ 
             var found = customers.findIndex(function(item){
                 return item.code == customer.code;

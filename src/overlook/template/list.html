@@ -1,5 +1,5 @@
 <div>
-    <ng-transclude></ng-transclude>
+    <ng-transclude ng-transclude-slot="columnSlot"></ng-transclude>
     <h4 style="text-transform:capitalize">{{title}}</h4>
     <table class="table table-sm table-hover">
         <thead>
@@ -15,6 +15,5 @@
     </table>
 </div>
 
-<div class="btn-toolbar">
-    <button ng-repeat="action in actions" type="button" class="btn btn-primary ml-1" ng-disabled="action.disabled()" ng-click="action.execute()">{{action.caption}}</button>
+<div class="btn-toolbar" ng-transclude="actionSlot">
 </div>

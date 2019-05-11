@@ -66,6 +66,7 @@ angular.module("overlook")
                 }
 
                 // Additional information made available on entity handler
+                this.getName = function(){ return entityDef.name; };
                 this.getSelection = function(){ return selection; };
                 this.getCaptionSingle = function() { return entityDef.captionSingle };
                 this.getCaptionMultiple = function() { return entityDef.captionMultiple };
