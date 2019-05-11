@@ -1,11 +1,11 @@
 function ListController($log, $scope, $uibModal, okAppContext){
 
     $scope.columns = [];
-    $scope.actions = [];
 
     var ctrl = this;
     var entityHandler = null;
     var selection = null;
+    var key = [];
 
     function loadRows(){
         entityHandler.retrieve().then(function(response){
@@ -44,12 +44,13 @@ function ListController($log, $scope, $uibModal, okAppContext){
         modal.result.then(complete, function(){})
     }
 
-    this.addAction = function(action){
-        $scope.actions.push(action);
-    }
-
     this.addColumn = function(column){
         $scope.columns.push(column);
+        if(column.usage == "pk") key.push(column.source);
+    };
+
+    this.getKey = function() {
+        return key;
     };
 
     this.$onInit = function(){
@@ -78,7 +79,7 @@ angular.module("overlook").component("okList", {
     templateUrl: "/template/overlook/list.html",
     transclude: {
         columnSlot: "okListColumn",
-        actionSlot: "okListAction"
+        actionSlot: "?okListAction"
     },
     controller: ["$log", "$scope", "$uibModal", "okAppContext", ListController],
     bindings: {

@@ -2,7 +2,7 @@
 
 
 angular.module("overlook").component("okListAction", {
-    controller: ["$scope", "okData", function($scope, okData){
+    controller: ["$scope", "$location", "okData", "okRouteParams", function($scope, $location, okData, $okRouteParams){
 
         var ctrl = this;
         var actionClasses = {};
@@ -55,7 +55,6 @@ angular.module("overlook").component("okListAction", {
             this.caption = getCaption("Edit");
             this.disabled = checkSingleSelection;
 
-
             this.execute = function(){
                 var data = selection.current();
                 var copy = angular.copy(data);
@@ -93,6 +92,20 @@ angular.module("overlook").component("okListAction", {
             }
         }
 
+        actionClasses.link = function(){
+            this.caption = getCaption("Link");
+            this.disabled = checkSingleSelection;
+
+            this.execute = function() {
+                var args = {};
+                var data = selection.current();
+                ctrl.list.getKey().forEach(function(column){
+                    args[column] = data[column];
+                });
+                $location.path("/page/" + ctrl.page + "/" + $okRouteParams.encode(args));
+            };
+        };
+
         ctrl.$onInit = function(){
             entityHandler = ctrl.entity.getHandler();
             selection = entityHandler.getSelection();
@@ -102,7 +115,8 @@ angular.module("overlook").component("okListAction", {
     bindings: {
         class: "@okActionClass",
         caption: "@okCaption",
-        source: "@okSource"
+        source: "@okSource",
+        page: "@okPage"
     },
     require: {
         list: "^okList",
