@@ -35,6 +35,7 @@ angular.module("overlook")
         }
 
         this.decode = function(data, text){
+            if(!text) return data;
             var map = createNameMap(data);
             var params = text.split("-");
             for(prop in data){

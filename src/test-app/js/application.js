@@ -9,9 +9,9 @@ angular.module("application", ["overlook"])
 
 function ServerEmulator($http, $q){
     var customers = [
-        { code: "CL1", name: "Some Random Customer" },
-        { code: "CL2", name: "A Completely Different Customer" },
-        { code: "CL3", name: "The Very Last Of Customers" }
+        { code: "CL1", name: "Some Random Customer", unblocked: true, since: "2010-01-13" },
+        { code: "CL2", name: "A Completely Different Customer", unblocked: true, since: "2015-06-30" },
+        { code: "CL3", name: "The Very Last Of Customers", unblocked: false }
     ];
     var features = [
         { customer: "CL1", code: "CL1F1",  name: "Feature #1" },

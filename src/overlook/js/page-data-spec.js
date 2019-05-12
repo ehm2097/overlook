@@ -75,9 +75,10 @@ describe("Page Data Service", function(){
         expect(child).toBeTruthy();
 
         // Simulate parent selection
-        expect(parent.selection).toBeDefined();
-        expect(parent.selection.select).toBeDefined();
-        parent.selection.select({foreignKey: "FK"});
+        var selection = parent.getSelection();
+        expect(selection).toBeDefined();
+        expect(selection.select).toBeDefined();
+        selection.select({foreignKey: "FK"});
 
         // Retrieve child data
         expect(child.retrieve).toBeDefined();

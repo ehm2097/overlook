@@ -54,10 +54,13 @@ angular.module("overlook")
 
                     // Override query arguments with parent data if available
                     var localArgs = angular.copy(args);
-                    if(parent && parent.selection.current()) {
-                        var parentData = parent.selection.current();
-                        for(arg in localArgs){
-                            if (parentData[arg]) localArgs[arg] = parentData[arg];
+                    if(parent){
+                        var parentSelection = parent.getSelection().current();
+                        if(parent && parentSelection) {
+                            var parentData = parentSelection;
+                            for(arg in localArgs){
+                                if (parentData[arg]) localArgs[arg] = parentData[arg];
+                            }
                         }
                     }
 

@@ -52,6 +52,11 @@ describe("Route parameter handler", function(){
             expect(routeParams.decode).toBeDefined();
         });
 
+        it("should support missing param values", function(){
+            var data = {};
+            expect(routeParams.decode(data, null)).toBe(data);
+        });
+
         it("should decode single params", function(){
             expect(routeParams.decode({task: null}, "t1000").task).toEqual("1000");
         });
