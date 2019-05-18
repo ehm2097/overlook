@@ -5,17 +5,23 @@ function PopupController($log, $uibModalInstance, $scope){
        if((column.usage == "pk") && !(column.source in $scope.$resolve.data)) isNew = true; 
     });
 
-    this.ok = function(){
+    $scope.title = $scope.$resolve.title;
+
+    $scope.columns = [];
+    $scope.$resolve.columns.forEach(function(srcColumn){
+        var destColumn = angular.copy(srcColumn);
+        destColumn.required = (destColumn.usage == "pk"); 
+        destColumn.readOnly = !isNew && (destColumn.usage == "pk");
+        $scope.columns.push(destColumn);
+     });
+
+    $scope.data = $scope.$resolve.data;
+
+    $scope.ok = function(){
         $uibModalInstance.close();
     }
-    this.cancel = function(){
+    $scope.cancel = function(){
         $uibModalInstance.dismiss();
-    }
-    this.readonly = function(column) {
-        return !isNew && (column.usage == "pk");
-    }
-    this.required = function(column){
-        return column.usage == "pk";
     }
 }
 

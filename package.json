@@ -19,7 +19,9 @@
     "angular-mocks": "^1.7.8",
     "angular-route": "^1.7.8",
     "angular-ui-bootstrap": "^2.5.6",
+    "angularjs-bootstrap-datetimepicker": "^1.1.4",
     "bootstrap": "^4.3.1",
+    "gijgo": "^1.9.13",
     "grunt": "^1.0.4",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-connect": "^2.0.0",
@@ -29,6 +31,7 @@
     "karma": "^4.1.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^2.0.1",
+    "karma-ng-html2js-preprocessor": "^1.0.0",
     "karma-spec-reporter": "0.0.32",
     "popper.js": "^1.15.0"
   }

@@ -1,0 +1,11 @@
+<div  class="form-group">
+    <label for="{{metadata.source}}" class="my-0">{{metadata.caption}}</label>
+    <div class="input-group input-group-sm" >
+        <input type="text" ng-model="value" class="form-control" id="{{metadata.source}}" 
+            uib-datepicker-popup="yyyy-MM-dd" is-open="popup" close-text="Close" aria-describedby="{{metadata.source}}-btn"
+            ng-readonly="metadata.readOnly" ng-required="metadata.required"/>
+        <div class="input-group-append">
+            <button class="input-group-text" id="{{metadata.source}}-btn" ng-click="open()">CALENDAR</button>
+        </div>
+    </div>
+</div>

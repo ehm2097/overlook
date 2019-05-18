@@ -3,7 +3,7 @@ angular.module("overlook").component("okListColumn", {
     controller: ["$log", function($log){
         this.$onInit = function(){
 
-            // TODO: create formatiing service based on this simple example 
+            // TODO: create formatting service based on this simple example 
             var formatters = {
                 text: function(value) { return value; },
                 boolean: function(value) { return (value) ? "\u2714" : "\u2716"; },
