@@ -4,13 +4,13 @@
     <table class="table table-sm table-hover">
         <thead>
             <tr>
-                <th ng-repeat="column in columns" class="ok-col-{{column.type}}">{{column.caption}}</th>
+                <th ng-repeat="column in columns" class="ok-col-{{column.field.type}}">{{column.field.caption}}</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="row in rows" ng-click="selectRow(row)" ng-class="getRowClass(row)">
-                <td ng-repeat="column in columns" class="py-0 ok-col-{{column.type}}">
-                    <span>{{column.getDisplayValue(row)}}</span>
+                <td ng-repeat="column in columns" class="py-0 ok-col-{{column.field.type}}">
+                    <span>{{column.getDisplayValue(row.data)}}</span>
                 </td>
             </tr>
         </tbody>

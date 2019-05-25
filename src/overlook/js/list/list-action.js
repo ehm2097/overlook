@@ -28,7 +28,8 @@ angular.module("overlook").component("okListAction", {
         }
 
         function callAction(standardName, data) {
-            return okData[getSource(standardName)](data);
+            //return okData[getSource(standardName)](data);
+            return data.invoke(getSource(standardName));
         }
 
         actionClasses.create =  function(){
@@ -36,7 +37,7 @@ angular.module("overlook").component("okListAction", {
             this.disabled = function(){ return false; }
     
             this.execute = function(){
-                var data = {};
+                var data = entityHandler.init();
 
                 function updateList() {
                     ctrl.list.addRow(data);
@@ -57,7 +58,7 @@ angular.module("overlook").component("okListAction", {
 
             this.execute = function(){
                 var data = selection.current();
-                var copy = angular.copy(data);
+                var copy = entityHandler.copy(data);
 
                 function updateList(){
                     // TODO: better implementation

@@ -14,7 +14,7 @@ angular.module("overlook")
         link: function(scope, iElement, iAttrs){
 
             var document = iElement[0].ownerDocument; 
-            var widget = document.createElement(getTagName(scope[iAttrs.okMetadata].type));
+            var widget = document.createElement(getTagName(scope[iAttrs.okMetadata].field.type.prototype.getTypeName()));
             for(attr in iAttrs.$attr){
                 widget.setAttribute(iAttrs.$attr[attr], iAttrs[attr]);
             };

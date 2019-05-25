@@ -1,7 +1,7 @@
 
 angular.module("overlook")
 
-.factory("okPageData", ["okData", "okRouteParams", "$route", function(okData, okRouteParams, $route){
+.factory("okPageData", ["$q", "okData", "okRouteParams", "$route", function($q, okData, okRouteParams, $route){
 
     function PageDataService(){
 
@@ -28,6 +28,7 @@ angular.module("overlook")
                 return current == null ? 0 : 1;
             }
         }
+
         
         this.initialize = function(){
             entities = {};
@@ -50,6 +51,26 @@ angular.module("overlook")
                 // Identify parent entity if any
                 var parent = (entityDef.parent) ? entities[entityDef.parent] : null;
 
+                var fields = [];
+
+                this.init = function(){
+                    var data = {};
+                    fields.forEach(function(field){
+                        data[field.source] = new field.type();
+                    });
+                    return {
+                        data: data,
+                        newRow: true,
+                        invoke: function(name){
+                            var values = {};
+                            fields.forEach(function(field){
+                                values[field.source] = data[field.source].json();
+                            })
+                            return okData[name](values);
+                        }
+                    };
+                }
+
                 this.retrieve = function(){
 
                     // Override query arguments with parent data if available
@@ -65,7 +86,40 @@ angular.module("overlook")
                     }
 
                     // Invoke known retrieve function
-                    return sourceFn(localArgs);
+                    return $q(function(resolve, reject){
+                        sourceFn(localArgs).then(function(result){
+                            for(i in result.data){
+                                var data = result.data[i];
+                                fields.forEach(function(field){
+                                    data[field.source] = new field.type(data[field.source])
+                                });
+
+                                result.data[i] = {
+                                    data: data,
+                                    newRow: false,
+                                    invoke: function(name){
+                                        var values = {};
+                                        fields.forEach(function(field){
+                                            values[field.source] = data[field.source].json();
+                                        })
+                                        return okData[name](values);
+                                    }
+                                }
+                            }
+                            resolve(result);
+                        }, reject);
+                    });
+                }
+
+                this.copy = function(source, target){
+                    var result = target ? target : this.init();
+                    console.log(source);
+                    console.log(result);
+                    fields.forEach(function(field){
+                        result.data[field.source] = source.data[field.source].clone();
+                    }) 
+                    result.newRow = source.newRow;
+                    return result;
                 }
 
                 // Additional information made available on entity handler
@@ -73,6 +127,10 @@ angular.module("overlook")
                 this.getSelection = function(){ return selection; };
                 this.getCaptionSingle = function() { return entityDef.captionSingle };
                 this.getCaptionMultiple = function() { return entityDef.captionMultiple };
+
+                this.registerField = function(field){
+                    fields.push(field);
+                }
 
                 // Register as a managed entity
                 entities[entityDef.name] = this;

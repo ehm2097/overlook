@@ -1,17 +1,14 @@
 function PopupController($log, $uibModalInstance, $scope){
 
-    var isNew = false;
-    $scope.$resolve.columns.forEach(function(column){
-       if((column.usage == "pk") && !(column.source in $scope.$resolve.data)) isNew = true; 
-    });
+    var isNew = $scope.$resolve.data.newRow;
 
     $scope.title = $scope.$resolve.title;
 
     $scope.columns = [];
     $scope.$resolve.columns.forEach(function(srcColumn){
         var destColumn = angular.copy(srcColumn);
-        destColumn.required = (destColumn.usage == "pk"); 
-        destColumn.readOnly = !isNew && (destColumn.usage == "pk");
+        destColumn.field.required = (destColumn.field.usage == "pk"); 
+        destColumn.field.readOnly = !isNew && (destColumn.field.usage == "pk");
         $scope.columns.push(destColumn);
      });
 

@@ -15,11 +15,14 @@ function ListController($log, $scope, $uibModal, okAppContext){
     }
 
     this.addRow = function(data) {
+        console.log($scope.rows);
+        console.log(data);
         $scope.rows.push(data);
     }
 
     this.updateRow = function(oldRow, newRow) {
-        angular.copy(newRow, oldRow);
+        //angular.copy(newRow, oldRow);
+        entityHandler.copy(newRow, oldRow);
     }
 
     this.removeRow = function(){
@@ -44,9 +47,10 @@ function ListController($log, $scope, $uibModal, okAppContext){
         modal.result.then(complete, function(){})
     }
 
-    this.addColumn = function(column){
+    this.registerColumn = function(column){
         $scope.columns.push(column);
-        if(column.usage == "pk") key.push(column.source);
+        if(column.field.usage == "pk") key.push(column.field.source);
+        entityHandler.registerField(column.field);
     };
 
     this.getKey = function() {
@@ -54,7 +58,7 @@ function ListController($log, $scope, $uibModal, okAppContext){
     };
 
     this.$onInit = function(){
-
+ 
         entityHandler = ctrl.entity.getHandler();
         selection = entityHandler.getSelection();
         ctrl.entity = entityHandler;

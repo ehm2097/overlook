@@ -43,7 +43,12 @@ function ServerEmulator($http, $q){
     this.updateCustomer = function(customer){
         return $q(function(resolve, reject){ 
             if(customer.code == "CL1") reject();
-            else resolve();       
+            else {
+                for(i in customers){
+                    if(customers[i].code == customer.code) customers[i] = customer;
+                }
+                resolve();  
+            }     
         })
     }
 

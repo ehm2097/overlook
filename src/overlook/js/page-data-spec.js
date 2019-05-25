@@ -3,8 +3,14 @@ describe("Page Data Service", function(){
 
     var pageData;
 
-    var getParentSpy = jasmine.createSpy("getParents");
-    var getChildSpy = jasmine.createSpy("getChildren");
+    var result = {
+        then: function(fn){
+            fn({ data: [] })
+        }
+    }
+
+    var getParentSpy = jasmine.createSpy("getParents").and.returnValue(result);
+    var getChildSpy = jasmine.createSpy("getChildren").and.returnValue(result);
 
     var data = {
         getParents: ["external", getParentSpy],

@@ -4,7 +4,7 @@ describe("Generic widget directive", function(){
     var $compile;
     var scope;
 
-    function testWidget(typeName, widgetName) {
+    function testWidget(typeName, data, widgetName) {
 
         return function(){
             // Test constants and derivates
@@ -21,8 +21,18 @@ describe("Generic widget directive", function(){
             var element = angular.element(html);
 
             // Initialize scope with required information
-            scope.metadata = { type: typeName, source: id };
+            scope.metadata = {
+                field: { 
+                    type: {
+                        getTypeName: function(){
+                            return typeName;
+                        }
+                    }, 
+                    source: id 
+                } 
+            };
             scope.data = {};
+            scope.data[id] = data;
 
             // Let angular forces do their magic
             $compile(element)(scope);
@@ -46,6 +56,6 @@ describe("Generic widget directive", function(){
         scope = _$rootScope_;
     }));
 
-    it("should create text widget", testWidget("text", "ok-text-widget"));
-    it("should create check box widget", testWidget("boolean", "ok-check-box-widget"));
+    it("should create text widget", testWidget("text", { value: "ABC" }, "ok-text-widget"));
+    it("should create check box widget", testWidget("boolean", { value: true }, "ok-check-box-widget"));
 });
