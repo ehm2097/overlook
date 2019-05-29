@@ -15,7 +15,6 @@ angular.module("overlook")
             $scope.metadata = ctrl.okMetadata.field;
             var date = ctrl.okData[$scope.metadata.source];
             $scope.value = date.year ? new Date(date.year, date.month - 1, date.day) : null;
-            console.log($scope.value);
             $scope.$watch("value", function(value){
                 if(value) {
                     date.day = value.getDate();
@@ -27,7 +26,6 @@ angular.module("overlook")
                     date.month = null;
                     date.year = null;    
                 }
-                console.log(date);
             });
         }
 

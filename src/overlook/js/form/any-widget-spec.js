@@ -24,8 +24,10 @@ describe("Generic widget directive", function(){
             scope.metadata = {
                 field: { 
                     type: {
-                        getTypeName: function(){
-                            return typeName;
+                        prototype: {
+                            getTypeName: function(){
+                                return typeName;
+                            }    
                         }
                     }, 
                     source: id 

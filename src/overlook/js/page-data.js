@@ -113,8 +113,6 @@ angular.module("overlook")
 
                 this.copy = function(source, target){
                     var result = target ? target : this.init();
-                    console.log(source);
-                    console.log(result);
                     fields.forEach(function(field){
                         result.data[field.source] = source.data[field.source].clone();
                     }) 
