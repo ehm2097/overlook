@@ -4,23 +4,36 @@ angular.module("overlook")
 .factory("okDataObjects", function(){
 
     function DataObjectFactory(descriptor){
+        DataObject.prototype.copy = copy;
+
+        function copy(destination){
+            destination = destination ? destination : new DataObject();
+            for(prop in descriptor) {
+                if(destination instanceof DataObject)
+                    destination[prop] = this[prop];
+                else destination[prop] = this[prop].json();
+            }
+            return destination;
+        }
+
+        function DataObject(){}
+
         this.create = function(object){
-
-            var wrapped = {};
-
-            for(prop in descriptor){
-                wrapped[prop] = new descriptor[prop](object[prop]);
-            }
-
-            wrapped.copy = function(destination){
-                for(prop in descriptor){
-                    console.log(wrapped[prop]);
-                    destination[prop] = wrapped[prop].json();
+            let wrapped = null;
+            if(Array.isArray(object)){
+                wrapped = [];
+                for(i in object){
+                    wrapped.push(this.create(object[i]));
                 }
-                return destination;
             }
-
-            return wrapped;
+            else {
+                wrapped = new DataObject();
+                for(prop in descriptor){
+                    let value = object ? object[prop] : null;
+                    wrapped[prop] = new descriptor[prop](value);
+                }
+            }
+            return wrapped;    
         }
     }
 

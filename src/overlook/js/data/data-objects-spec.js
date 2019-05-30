@@ -4,24 +4,25 @@ describe("Data object manager", function(){
     var dataObjects;
     var factory;
 
-    var sample = {
-        prop1: "ABC",
-        prop2: 123
+    const DEFAULT1 = "-";
+    const DEFAULT2 = 0;
+
+    const VALUE1 = "ABC";
+    const VALUE2 = 123;
+
+    const sample = {
+        prop1: VALUE1,
+        prop2: VALUE2
     }
+
     function Handler1(value){
-        expect(value).toEqual(sample.prop1);
-        this.value = sample.prop1;
-        this.json = function(){
-            return sample.prop1;
-        }
+        this.value = value ? value : DEFAULT1;
+        this.json = function() { return this.value; }
     }
 
     function Handler2(value){
-        expect(value).toEqual(sample.prop2);
-        this.value = sample.prop2;
-        this.json = function(){
-            return sample.prop2;
-        }
+        this.value = value ? value : DEFAULT2;
+        this.json = function() { return this.value; }
     }
 
 
@@ -56,15 +57,57 @@ describe("Data object manager", function(){
 
             // Check wrapped object property access
             expect(wrapped.prop1).toBeTruthy();
-            expect(wrapped.prop1.value).toEqual(sample.prop1);
+            expect(wrapped.prop1.value).toEqual(VALUE1);
             expect(wrapped.prop2).toBeTruthy();
-            expect(wrapped.prop2.value).toEqual(sample.prop2);
+            expect(wrapped.prop2.value).toEqual(VALUE2);
 
             // Unwrap back and check result
             let unwrapped = wrapped.copy({});
             expect(unwrapped).toBeTruthy();
-            expect(unwrapped.prop1).toEqual(sample.prop1);
-            expect(unwrapped.prop2).toEqual(sample.prop2);
+            expect(unwrapped.prop1).toEqual(VALUE1);
+            expect(unwrapped.prop2).toEqual(VALUE2);
+        })
+
+        it("should initialize and copy data", function(){
+
+            // Initialize empty/default data
+            let wrapped = factory.create();
+            expect(wrapped).toBeTruthy();
+
+            // Check property values
+            expect(wrapped.prop1).toBeTruthy();
+            expect(wrapped.prop1.value).toEqual(DEFAULT1);
+            expect(wrapped.prop2).toBeTruthy();
+            expect(wrapped.prop2.value).toEqual(DEFAULT2);
+
+            // Copy values from different object
+            let wrapped2 = factory.create(sample);
+            let wrapped3 = wrapped2.copy();
+            expect(wrapped3).toBeTruthy();
+
+            // Copy again
+            let wrapped4 = wrapped3.copy(wrapped);
+            expect(wrapped4).toBeTruthy();
+            expect(wrapped4).toBe(wrapped);
+
+            // Check property values again
+            expect(wrapped.prop1).toBeTruthy();
+            expect(wrapped.prop1.value).toEqual(VALUE1);
+            expect(wrapped.prop2).toBeTruthy();
+            expect(wrapped.prop2.value).toEqual(VALUE2);
+        })
+
+        it("should wrap arrays", function(){
+
+            // wrap a mix of sample and default data
+            let wrapped = factory.create([sample, null]);
+            expect(wrapped).toBeTruthy();
+
+            // Check property values
+            expect(wrapped[0].prop1).toBeTruthy();
+            expect(wrapped[0].prop1.value).toEqual(VALUE1);
+            expect(wrapped[1].prop2).toBeTruthy();
+            expect(wrapped[1].prop2.value).toEqual(DEFAULT2);
         })
 
     })
