@@ -1,8 +1,8 @@
 angular.module("application", ["overlook"])
 
 .config(["okAppContextProvider", function(okAppContextProvider){
-    okAppContextProvider.setupPageUrl("/template/app/");
-    okAppContextProvider.setupMenuUrl("/template/app/application-menu.html");
+    okAppContextProvider.setupPageUrl("/template/");
+    okAppContextProvider.setupMenuUrl("/template/application-menu.html");
 }])
 
 .decorator("okData", ["$http", "$q", ServerEmulator]);
