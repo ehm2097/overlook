@@ -21,8 +21,8 @@ module.exports = function(config) {
       "node_modules/bootstrap/dist/js/bootstrap.js",
       "node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js",
       "node_modules/angular-mocks/angular-mocks.js",
-      "dest/template/**/*.html",
-      "dest/js/overlook/overlook.js",
+      //"dest/template/**/*.html",
+      "dest/overlook/overlook.js",
       'src/**/*-spec.js'
     ],
 
@@ -35,14 +35,16 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "dest/template/**/*.html": ["ng-html2js"]
+      //"dest/template/**/*.html": ["ng-html2js"]
     },
 
+    /*
     ngHtml2JsPreprocessor: {
       stripPrefix: "dest/",
       prependPrefix: "/",
       moduleName: "templates"
     },
+    */
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

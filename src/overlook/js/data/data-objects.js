@@ -1,4 +1,6 @@
 
+// FIX: array wrapping no longer used in this configuration
+
 angular.module("overlook")
 
 .factory("okDataObjects", function(){

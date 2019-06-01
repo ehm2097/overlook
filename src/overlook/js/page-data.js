@@ -1,7 +1,7 @@
 
 angular.module("overlook")
 
-.factory("okPageData", ["$q", "okData", "okRouteParams", "$route", function($q, okData, okRouteParams, $route){
+.factory("okPageData", ["$q", "okData", "okDataObjects", "okRouteParams", "$route", function($q, okData, okDataObjects, okRouteParams, $route){
 
     function PageDataService(){
 
@@ -37,6 +37,22 @@ angular.module("overlook")
         this.registerEntity = function(entityDef){
             function EntityHandler(){
 
+                var factory = new function(){
+                    var descriptor = {};
+                    var factory = null;
+
+                    this.get = function(){
+                        if(!factory) 
+                            factory = okDataObjects.createFactory(descriptor);
+                        return factory;
+                    }
+
+                    this.addField = function(name, type){
+                        descriptor[name] = type;
+                    }
+                };
+
+
                 var selection = new Selection();
 
                 // Build object to store expected arguments
@@ -51,22 +67,14 @@ angular.module("overlook")
                 // Identify parent entity if any
                 var parent = (entityDef.parent) ? entities[entityDef.parent] : null;
 
-                var fields = [];
 
                 this.init = function(){
-                    var data = {};
-                    fields.forEach(function(field){
-                        data[field.source] = new field.type();
-                    });
+                    var data = factory.get().create(); 
                     return {
                         data: data,
                         newRow: true,
                         invoke: function(name){
-                            var values = {};
-                            fields.forEach(function(field){
-                                values[field.source] = data[field.source].json();
-                            })
-                            return okData[name](values);
+                           return okData[name](data.copy({}));
                         }
                     };
                 }
@@ -89,20 +97,13 @@ angular.module("overlook")
                     return $q(function(resolve, reject){
                         sourceFn(localArgs).then(function(result){
                             for(i in result.data){
-                                var data = result.data[i];
-                                fields.forEach(function(field){
-                                    data[field.source] = new field.type(data[field.source])
-                                });
+                                var data = factory.get().create(result.data[i]);
 
                                 result.data[i] = {
                                     data: data,
                                     newRow: false,
                                     invoke: function(name){
-                                        var values = {};
-                                        fields.forEach(function(field){
-                                            values[field.source] = data[field.source].json();
-                                        })
-                                        return okData[name](values);
+                                        return okData[name](data.copy({}));
                                     }
                                 }
                             }
@@ -113,9 +114,7 @@ angular.module("overlook")
 
                 this.copy = function(source, target){
                     var result = target ? target : this.init();
-                    fields.forEach(function(field){
-                        result.data[field.source] = source.data[field.source].clone();
-                    }) 
+                    source.data.copy(result.data);
                     result.newRow = source.newRow;
                     return result;
                 }
@@ -127,7 +126,7 @@ angular.module("overlook")
                 this.getCaptionMultiple = function() { return entityDef.captionMultiple };
 
                 this.registerField = function(field){
-                    fields.push(field);
+                    factory.addField(field.source, field.type);
                 }
 
                 // Register as a managed entity

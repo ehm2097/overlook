@@ -50,8 +50,6 @@ describe("Generic widget directive", function(){
 
     beforeEach(angular.mock.module("overlook"));
 
-    beforeEach(angular.mock.module("templates"));
-
     beforeEach(inject(function(_$compile_, _$document_, _$rootScope_){
         $compile = _$compile_;
         $document = _$document_[0];
