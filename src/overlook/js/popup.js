@@ -4,12 +4,12 @@ function PopupController($log, $uibModalInstance, $scope){
 
     $scope.title = $scope.$resolve.title;
 
-    $scope.columns = [];
-    $scope.$resolve.columns.forEach(function(srcColumn){
-        var destColumn = angular.copy(srcColumn);
-        destColumn.field.required = (destColumn.field.usage == "pk"); 
-        destColumn.field.readOnly = !isNew && (destColumn.field.usage == "pk");
-        $scope.columns.push(destColumn);
+    $scope.fields = [];
+    $scope.$resolve.fields.forEach(function(srcField){
+        var destField = angular.copy(srcField);
+        destField.required = (destField.usage == "pk"); 
+        destField.readOnly = !isNew && (destField.usage == "pk");
+        $scope.fields.push(destField);
      });
 
     $scope.data = $scope.$resolve.data;

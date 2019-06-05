@@ -1,9 +1,9 @@
 function ListController($log, $scope, $uibModal, okAppContext){
 
-    $scope.columns = [];
 
     var ctrl = this;
     var entityHandler = null;
+    var fields = null;
     var selection = null;
     var key = [];
 
@@ -15,8 +15,6 @@ function ListController($log, $scope, $uibModal, okAppContext){
     }
 
     this.addRow = function(data) {
-        console.log($scope.rows);
-        console.log(data);
         $scope.rows.push(data);
     }
 
@@ -37,7 +35,7 @@ function ListController($log, $scope, $uibModal, okAppContext){
             controllerAs: "$ctrl",
             resolve: {
                 data: function() { return data },
-                columns: function(){ return $scope.columns },
+                fields: function(){ return $scope.getFields() },
                 title: function(){ return entityHandler.getCaptionSingle() } 
             },
             windowClass: "show",
@@ -47,26 +45,36 @@ function ListController($log, $scope, $uibModal, okAppContext){
         modal.result.then(complete, function(){})
     }
 
+    /*
     this.registerColumn = function(column){
         $scope.columns.push(column);
-        if(column.field.usage == "pk") key.push(column.field.source);
         entityHandler.registerField(column.field);
     };
+    */
 
     this.getKey = function() {
         return key;
     };
 
     this.$onInit = function(){
- 
-        entityHandler = ctrl.entity.getHandler();
+        entityHandler = ctrl.entity.handler;
         selection = entityHandler.getSelection();
         ctrl.entity = entityHandler;
         loadRows();
 
         $scope.title = entityHandler.getCaptionMultiple();
-
     };
+
+    $scope.getFields = function(){
+        if(!fields) {
+            fields = [];
+            ctrl.entity.forEachField(function(field){
+                fields.push(field);
+                if(field.usage == "pk") key.push(field.name);
+            });
+        }
+        return fields;
+    }
 
     $scope.selectRow = function(row){
         selection.select(row);
@@ -82,7 +90,7 @@ function ListController($log, $scope, $uibModal, okAppContext){
 angular.module("overlook").component("okList", {
     templateUrl: "/template/overlook/list.html",
     transclude: {
-        columnSlot: "okListColumn",
+        columnSlot: "okField",
         actionSlot: "?okListAction"
     },
     controller: ["$log", "$scope", "$uibModal", "okAppContext", ListController],

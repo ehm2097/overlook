@@ -1,0 +1,13 @@
+<ok-entity ok-name="holiday" ok-source="getHolidays" ok-caption-single="holiday" ok-caption-multiple="holidays">
+    <ok-list>
+        <ok-field ok-name="personCode" ok-caption="Person" ok-field-usage="pk">
+            <ok-entity ok-name="person" ok-source="getPeople" ok-caption-single="person" ok-caption-multiple="people">
+                <ok-field ok-name="code" ok-caption="Code" ok-field-usage="pk"/>
+                <ok-field ok-name="fullName" ok-caption="Full Name" ok-field-usage="title"/>
+            </ok-entity>
+        </ok-field>
+        <ok-field ok-name="fromDate" ok-caption="From Date" ok-data-type="date" ok-field-usage="pk"/>
+        <ok-field ok-name="toDate" ok-caption="To Date" ok-data-type="date"/>
+        <ok-field ok-name="description" ok-caption="Description" ok-field-usage="title"/>
+    </ok-list>
+</ok-entity>

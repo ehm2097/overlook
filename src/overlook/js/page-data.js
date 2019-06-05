@@ -38,18 +38,20 @@ angular.module("overlook")
             function EntityHandler(){
 
                 var factory = new function(){
-                    var descriptor = {};
+                    //var descriptor = {};
                     var factory = null;
 
                     this.get = function(){
                         if(!factory) 
-                            factory = okDataObjects.createFactory(descriptor);
+                            factory = okDataObjects.createFactory(entityDef.fields);
                         return factory;
                     }
 
+                    /*
                     this.addField = function(name, type){
                         descriptor[name] = type;
                     }
+                    */
                 };
 
 
@@ -124,10 +126,18 @@ angular.module("overlook")
                 this.getSelection = function(){ return selection; };
                 this.getCaptionSingle = function() { return entityDef.captionSingle };
                 this.getCaptionMultiple = function() { return entityDef.captionMultiple };
+                
+                this.forEachField = function(fieldAction) {
+                    entityDef.fields.forEach(function(field){
+                        fieldAction(field);
+                    });
+                } 
 
+                /*
                 this.registerField = function(field){
                     factory.addField(field.source, field.type);
                 }
+                */
 
                 // Register as a managed entity
                 entities[entityDef.name] = this;

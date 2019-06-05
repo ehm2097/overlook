@@ -22,16 +22,14 @@ describe("Generic widget directive", function(){
 
             // Initialize scope with required information
             scope.metadata = {
-                field: { 
-                    type: {
-                        prototype: {
-                            getTypeName: function(){
-                                return typeName;
-                            }    
-                        }
-                    }, 
-                    source: id 
-                } 
+                type: {
+                    prototype: {
+                        getTypeName: function(){
+                            return typeName;
+                        }    
+                    }
+                }, 
+                name: id 
             };
             scope.data = {};
             scope.data[id] = data;

@@ -1,9 +1,9 @@
 <ok-entity ok-name="customer" ok-source="getCustomers" ok-caption-single="customer" ok-caption-multiple="customers">
     <ok-list>
-        <ok-list-column ok-source="code" ok-caption="Code" ok-field-usage="pk"/>
-        <ok-list-column ok-source="name" ok-caption="Full Name" ok-field-usage="title"/>
-        <ok-list-column ok-source="unblocked" ok-caption="Not Blocked" ok-data-type="boolean"/>
-        <ok-list-column ok-source="since" ok-caption="Since" ok-data-type="date"/>
+        <ok-field ok-name="code" ok-caption="Code" ok-field-usage="pk"/>
+        <ok-field ok-name="name" ok-caption="Full Name" ok-field-usage="title"/>
+        <ok-field ok-name="unblocked" ok-caption="Not Blocked" ok-data-type="boolean"/>
+        <ok-field ok-name="since" ok-caption="Since" ok-data-type="date"/>
         <ok-list-action ok-action-class="create"/>
         <ok-list-action ok-action-class="edit"/>
         <ok-list-action ok-action-class="link" ok-caption="Features" ok-page="features"/>

@@ -5,10 +5,10 @@ angular.module("overlook")
     controller: ["$scope", function($scope){
         var ctrl = this;
         this.$onInit = function(){
-            $scope.metadata = ctrl.okMetadata.field;
-            $scope.value = ctrl.okData[$scope.metadata.source].value;
+            $scope.metadata = ctrl.okMetadata;
+            $scope.value = ctrl.okData[$scope.metadata.name].value;
             $scope.$watch("value", function(value){
-                ctrl.okData[$scope.metadata.source].value = value;
+                ctrl.okData[$scope.metadata.name].value = value;
             });
         }
     }],

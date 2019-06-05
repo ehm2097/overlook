@@ -16,26 +16,5 @@ angular.module("overlook").controller("lkPageController", ["$scope", "$route","o
 
 
 
-angular.module("overlook").component("okEntity", {
-    controller: ["$log", "okPageData", function($log, okPageData){
 
-        var ctrl = this;
-        this.$onInit = function() {
-            var entityDef = {
-                name: ctrl.okName,
-                source: ctrl.okSource,
-                captionSingle: ctrl.okCaptionSingle,
-                captionMultiple: ctrl.okCaptionMultiple
-            };
-            var handler = okPageData.registerEntity(entityDef);
-            ctrl.getHandler = function(){ return handler; }
-        }
-    }],
-    bindings: {
-        okName: "@",
-        okSource: "@",
-        okCaptionSingle: "@",
-        okCaptionMultiple: "@"
-    }
-});
 

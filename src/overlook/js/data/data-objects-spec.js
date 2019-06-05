@@ -37,10 +37,10 @@ describe("Data object manager", function(){
     })
 
     beforeEach(function(){
-        factory = dataObjects.createFactory({
-            prop1: Handler1,
-            prop2: Handler2
-        })
+        factory = dataObjects.createFactory([
+            {name: "prop1", type: Handler1},
+            {name: "prop2", type: Handler2}
+        ])
     })
 
     it("should build dedicated factories", function(){
@@ -86,6 +86,7 @@ describe("Data object manager", function(){
             expect(wrapped3).toBeTruthy();
 
             // Copy again
+            console.log(wrapped3, wrapped2, wrapped);
             let wrapped4 = wrapped3.copy(wrapped);
             expect(wrapped4).toBeTruthy();
             expect(wrapped4).toBe(wrapped);

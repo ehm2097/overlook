@@ -59,6 +59,7 @@ angular.module("overlook").component("okListAction", {
             this.execute = function(){
                 var data = selection.current();
                 var copy = entityHandler.copy(data);
+                console.log(data, copy);
 
                 function updateList(){
                     // TODO: better implementation
@@ -108,7 +109,7 @@ angular.module("overlook").component("okListAction", {
         };
 
         ctrl.$onInit = function(){
-            entityHandler = ctrl.entity.getHandler();
+            entityHandler = ctrl.entity.handler;
             selection = entityHandler.getSelection();
             $scope.action = new actionClasses[ctrl.class]();
         }
