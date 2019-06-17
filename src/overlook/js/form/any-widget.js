@@ -13,7 +13,8 @@ angular.module("overlook")
         restrict: "E",
         link: function(scope, iElement, iAttrs){
             var document = iElement[0].ownerDocument; 
-            var widget = document.createElement(getTagName(scope[iAttrs.okMetadata].type.prototype.getTypeName()));
+            // var widget = document.createElement(getTagName(scope[iAttrs.okMetadata].type.prototype.getTypeName()));
+            var widget = document.createElement(getTagName(scope[iAttrs.okMetadata].getTypeName()));
             for(attr in iAttrs.$attr){
                 widget.setAttribute(iAttrs.$attr[attr], iAttrs[attr]);
             };

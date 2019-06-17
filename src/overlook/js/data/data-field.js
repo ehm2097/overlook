@@ -1,19 +1,14 @@
 
 angular.module("overlook").component("okField", {
-    controller: ["okDataTypes", function(okDataTypes){
+    controller: ["okDataField", function(okDataField){
         this.$onInit = function(){
 
-            var type = (this.okDataType) ? this.okDataType : "text";
+            var typeName = (this.okDataType) ? this.okDataType : "text";
 
-            var field = {
-                name: this.okName,
-                caption: this.okCaption,
-                usage: this.okFieldUsage,
-                type: okDataTypes[type]
-            };
-            field.getDisplayValue = function(dataObject){
-                return dataObject[field.name].display();
-            }
+            var field = okDataField(this.okName, typeName);
+            field.caption = this.okCaption;
+            field.usage = this.okFieldUsage;
+
             this.entity.registerField(field);
         };
     }],

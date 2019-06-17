@@ -1,7 +1,10 @@
+// TODO: separate testing for data objects and data fields
 
 describe("Data object manager", function(){
 
     var dataObjects;
+    var dataField;
+    var dataTypes;
     var factory;
 
     const DEFAULT1 = "-";
@@ -15,18 +18,33 @@ describe("Data object manager", function(){
         prop2: VALUE2
     }
 
+    const TYPE1 = "one";
+    const TYPE2 = "two";
+
     function Handler1(value){
         this.value = value ? value : DEFAULT1;
         this.json = function() { return this.value; }
+        this.clone = function () { return new Handler1(this.value) }
     }
 
     function Handler2(value){
         this.value = value ? value : DEFAULT2;
         this.json = function() { return this.value; }
+        this.clone = function () { return new Handler2(this.value) }
     }
 
 
     beforeEach(angular.mock.module("overlook"));
+
+    beforeEach(inject(function(_okDataTypes_){
+        dataTypes = _okDataTypes_;
+        dataTypes[TYPE1] = Handler1;
+        dataTypes[TYPE2] = Handler2;
+    }));
+
+    beforeEach(inject(function(_okDataField_){
+        dataField = _okDataField_;
+    }));
 
     beforeEach(inject(function(_okDataObjects_){
         dataObjects = _okDataObjects_;
@@ -38,8 +56,8 @@ describe("Data object manager", function(){
 
     beforeEach(function(){
         factory = dataObjects.createFactory([
-            {name: "prop1", type: Handler1},
-            {name: "prop2", type: Handler2}
+            dataField("prop1", TYPE1),
+            dataField("prop2", TYPE2),
         ])
     })
 
@@ -86,7 +104,6 @@ describe("Data object manager", function(){
             expect(wrapped3).toBeTruthy();
 
             // Copy again
-            console.log(wrapped3, wrapped2, wrapped);
             let wrapped4 = wrapped3.copy(wrapped);
             expect(wrapped4).toBeTruthy();
             expect(wrapped4).toBe(wrapped);

@@ -22,17 +22,13 @@ describe("Generic widget directive", function(){
 
             // Initialize scope with required information
             scope.metadata = {
-                type: {
-                    prototype: {
-                        getTypeName: function(){
-                            return typeName;
-                        }    
-                    }
+                getTypeName: function(){
+                    return typeName;
                 }, 
-                name: id 
+                getValue: function() {
+                    return data;
+                }  
             };
-            scope.data = {};
-            scope.data[id] = data;
 
             // Let angular forces do their magic
             $compile(element)(scope);

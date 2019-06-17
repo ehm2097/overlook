@@ -45,13 +45,6 @@ function ListController($log, $scope, $uibModal, okAppContext){
         modal.result.then(complete, function(){})
     }
 
-    /*
-    this.registerColumn = function(column){
-        $scope.columns.push(column);
-        entityHandler.registerField(column.field);
-    };
-    */
-
     this.getKey = function() {
         return key;
     };

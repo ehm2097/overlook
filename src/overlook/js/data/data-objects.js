@@ -1,5 +1,4 @@
 
-// FIX: array wrapping no longer used in this configuration
 
 angular.module("overlook")
 
@@ -11,11 +10,17 @@ angular.module("overlook")
         function copy(destination){
             var dataObject = this;
             destination = destination ? destination : new DataObject();
+
             fields.forEach(function(field){
+                /*
                 var name = field.name;
                 if(destination instanceof DataObject)
                     destination[name] = dataObject[name];
                 else destination[name] = dataObject[name].json();
+                */
+                if(destination instanceof DataObject)
+                   field.copy(dataObject, destination);
+                else field.unwrap(dataObject, destination);
             });
             return destination;
         }
@@ -33,10 +38,12 @@ angular.module("overlook")
             else {
                 wrapped = new DataObject();
                 fields.forEach(function(field){
+                    /*
                     var name = field.name;
                     let value = object ? object[name] : null;
                     wrapped[name] = new field.type(value);
-
+                    */
+                   field.wrap(object, wrapped);
                 });
             }
             return wrapped;    
