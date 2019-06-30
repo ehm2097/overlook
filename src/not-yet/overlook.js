@@ -1,5 +1,3 @@
-var app = angular.module("overlook", ["ngRoute"]);
-
 angular.module("overlook").provider("okApp", [function(){
 
     var appMenuUrl = null;

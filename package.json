@@ -4,24 +4,30 @@
   "description": "Just a proof of concept for now",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start"
   },
   "keywords": [
     "overlook"
   ],
   "author": "avat",
   "license": "ISC",
-  "dependencies": {
-    "npm": "^6.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "angular": "^1.7.8",
+    "angular-mocks": "^1.7.8",
     "angular-route": "^1.7.8",
     "bootstrap": "^4.3.1",
     "grunt": "^1.0.4",
+    "grunt-angular-templates": "^1.1.0",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-connect": "^2.0.0",
     "grunt-contrib-copy": "^1.0.0",
-    "jquery": "^3.3.1",
+    "jasmine-core": "^3.4.0",
+    "jquery": "^3.4.1",
+    "karma": "^4.1.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-spec-reporter": "0.0.32",
     "popper.js": "^1.15.0"
   }
 }
