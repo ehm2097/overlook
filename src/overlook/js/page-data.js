@@ -38,7 +38,6 @@ angular.module("overlook")
             function EntityHandler(){
 
                 var factory = new function(){
-                    //var descriptor = {};
                     var factory = null;
 
                     this.get = function(){
@@ -46,12 +45,6 @@ angular.module("overlook")
                             factory = okDataObjects.createFactory(entityDef.fields);
                         return factory;
                     }
-
-                    /*
-                    this.addField = function(name, type){
-                        descriptor[name] = type;
-                    }
-                    */
                 };
 
 
@@ -132,12 +125,6 @@ angular.module("overlook")
                         fieldAction(field);
                     });
                 } 
-
-                /*
-                this.registerField = function(field){
-                    factory.addField(field.source, field.type);
-                }
-                */
 
                 // Register as a managed entity
                 entities[entityDef.name] = this;

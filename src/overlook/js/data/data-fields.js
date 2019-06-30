@@ -1,13 +1,10 @@
 
-// WORK IN PROGRESS !!!
-
 angular.module("overlook")
 
 .factory("okDataField", ["okDataTypes", function(okDataTypes){
 
     function SingleValueField(fieldName, typeName) {
 
-        // Internally accessible only!
         var name = fieldName;
         var type = okDataTypes[typeName];
 
@@ -42,24 +39,4 @@ angular.module("overlook")
     return function(fieldName, typeName) {
         return new SingleValueField(fieldName, typeName);
     }
-
-    /*
-    return function(typeName){
-        var type = okDataTypes[typeName];
-        var value = null;
-
-        this.name = null;
-        this.caption = null;
-        this.usage = null;
-
-        this.init = function() {
-            value = new type();
-            return value;
-        }
-
-        this.display = function() {
-            return value.display();
-        }
-    };
-    */
 }])
